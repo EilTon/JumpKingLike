@@ -10,12 +10,13 @@ public class Player : MonoBehaviour
 	public float _minJump;
 	public float _maxDirection;
 	public Image _powerBar;
-	
+
 	bool _isGround;
 	bool _wallHit;
 	float _jumpPower;
 	float _horizontal;
 	Rigidbody2D _rigibody;
+	Animator _animator;
 
 	void Start()
 	{
@@ -26,10 +27,13 @@ public class Player : MonoBehaviour
 		//_maxJump = 10f;
 		//_maxDirection = 5f;
 		_rigibody = GetComponent<Rigidbody2D>();
+		_animator = GetComponent<Animator>();
+		_animator.Play("PinkMonsterIdle");
 	}
 
 	void FixedUpdate()
 	{
+		_powerBar.transform.position = transform.position;
 		Jump();
 		Direction();
 		WallHit();
@@ -41,6 +45,7 @@ public class Player : MonoBehaviour
 		{
 			if (Input.GetKey(KeyCode.Space))
 			{
+				_animator.Play("PinkMonsterChargingJump");
 				if (_jumpPower < _maxJump)
 				{
 					_jumpPower += Time.fixedDeltaTime * 10f;
@@ -58,6 +63,7 @@ public class Player : MonoBehaviour
 			{
 				if (_jumpPower > 0f)
 				{
+					_animator.Play("PinkMonsterJump");
 					_jumpPower = _jumpPower + _minJump;
 					_rigibody.velocity = new Vector2(_horizontal, _jumpPower);
 					_isGround = false;
@@ -65,25 +71,33 @@ public class Player : MonoBehaviour
 			}
 
 		}
+		if (_rigibody.velocity.y < 0)
+		{
+			_animator.Play("PinkMonsterFall");
+		}
 	}
 
 	private void Direction()
 	{
 		if (Input.GetKey(KeyCode.D))
 		{
-			if (_horizontal < _maxDirection)
-			{
-				_horizontal += _powerDirection;
-			}
+			transform.localScale = new Vector3(1, 1, 1);
+			//if (_horizontal < _maxDirection)
+			//{
+			//	_horizontal += _powerDirection;
+			//}
+			_horizontal = _powerDirection;
 
 		}
 
 		else if (Input.GetKey(KeyCode.Q))
 		{
-			if (_horizontal > _maxDirection * -1f)
-			{
-				_horizontal -= _powerDirection;
-			}
+			transform.localScale = new Vector3(-1, 1, 1);
+			//if (_horizontal > _maxDirection * -1f)
+			//{
+			//	_horizontal -= _powerDirection;
+			//}
+			_horizontal = -_powerDirection;
 		}
 
 		else
@@ -96,6 +110,10 @@ public class Player : MonoBehaviour
 	{
 		if (_wallHit)
 		{
+			if (Mathf.Abs(_horizontal) < 1)
+			{
+				_horizontal = 1;
+			}
 			_rigibody.velocity = new Vector2(_horizontal * -1f, _jumpPower * 1f);
 			_wallHit = false;
 		}
@@ -110,6 +128,7 @@ public class Player : MonoBehaviour
 	{
 		if (collision.gameObject.CompareTag("Ground"))
 		{
+			_animator.Play("PinkMonsterIdle");
 			_powerBar.fillAmount = 0;
 			_jumpPower = 0f;
 			_isGround = true;
