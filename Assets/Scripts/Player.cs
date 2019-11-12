@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -8,7 +9,8 @@ public class Player : MonoBehaviour
 	public float _maxJump;
 	public float _minJump;
 	public float _maxDirection;
-
+	public Image _powerBar;
+	
 	bool _isGround;
 	bool _wallHit;
 	float _jumpPower;
@@ -48,6 +50,7 @@ public class Player : MonoBehaviour
 				{
 					_jumpPower = _maxJump;
 				}
+				PowerCharge();
 			}
 
 
@@ -98,10 +101,16 @@ public class Player : MonoBehaviour
 		}
 	}
 
+	private void PowerCharge()
+	{
+		_powerBar.fillAmount = _jumpPower / _maxJump;
+	}
+
 	private void OnCollisionEnter2D(Collision2D collision)
 	{
 		if (collision.gameObject.CompareTag("Ground"))
 		{
+			_powerBar.fillAmount = 0;
 			_jumpPower = 0f;
 			_isGround = true;
 		}
