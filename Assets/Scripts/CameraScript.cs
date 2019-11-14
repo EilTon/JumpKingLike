@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
@@ -11,6 +12,11 @@ public class CameraScript : MonoBehaviour
 	float _timer;
 	AudioSource _playerAudio;
 	Camera _camera;
+
+	DataTable Table;
+	DataRow _row;
+	DataColumn column;
+
 	private void Start()
 	{
 		int randomNumber = Random.Range(0, _audiosSources.Length);
