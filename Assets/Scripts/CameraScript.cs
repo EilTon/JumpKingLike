@@ -17,6 +17,7 @@ public class CameraScript : MonoBehaviour
 		_playerAudio = GetComponent<AudioSource>();
 		_playerAudio.clip = _audiosSources[randomNumber];
 		_playerAudio.Play();
+		_timer = 0;
 		_camera = Camera.main;
 	}
 	void Update()
