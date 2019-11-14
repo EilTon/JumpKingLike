@@ -114,7 +114,7 @@ public class Player : MonoBehaviour
 			{
 				_horizontal = 1;
 			}
-			_rigibody.velocity = new Vector2(_horizontal * -1f, _jumpPower * 1f);
+			_rigibody.velocity = new Vector2(_horizontal * -1f, _jumpPower);
 			_wallHit = false;
 		}
 	}

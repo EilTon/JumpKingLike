@@ -16,9 +16,11 @@ public class CameraScript : MonoBehaviour
 	DataTable Table;
 	DataRow _row;
 	DataColumn column;
+	
 
 	private void Start()
 	{
+		
 		int randomNumber = Random.Range(0, _audiosSources.Length);
 		_playerAudio = GetComponent<AudioSource>();
 		_playerAudio.clip = _audiosSources[randomNumber];
